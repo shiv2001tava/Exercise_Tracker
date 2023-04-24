@@ -11,11 +11,14 @@ app.use(cors())
 app.use(express.json())
 
 const uri = process.env.ATLAS_URI
-mongoose.connect(uri, { useNewUrlParser: true })
-const connection = mongoose.connection
-connection.once('open', () => {
-  console.log('MongoDB database connection established successfully')
-})
+mongoose
+  .connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => {
+    console.log('connected to MongoDB')
+  })
+  .catch((err) => {
+    console.log(err)
+  })
 
 const exercisesRouter = require('./routes/exercises')
 const usersRouter = require('./routes/users')
